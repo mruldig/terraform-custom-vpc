@@ -1,6 +1,7 @@
 // Here is where we are defining
 // our Terraform settings
 
+/*
 terraform {
   required_providers {
     // The only required provider we need
@@ -15,6 +16,7 @@ terraform {
   // This is the required version of Terraform
   required_version = "~> 1.1.5"
 }
+*/
 
 // Here we are configuring our aws provider. 
 // We are setting the region to the region of 
