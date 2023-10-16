@@ -2,7 +2,7 @@
 // AWS region that everything will be
 // created in
 variable "aws_region" {
-  default = "us-east-2"
+  default = "us-east-1"
 }
 
 // This variable is to set the
@@ -31,9 +31,9 @@ variable "settings" {
   type        = map(any)
   default = {
     "database" = {
-      allocated_storage   = 10            // storage in gigabytes
-      engine              = "mysql"       // engine type
-      engine_version      = "8.0.27"      // engine version
+      allocated_storage   = 5             // storage in gigabytes
+      engine              = "postgres"    // engine type
+      engine_version      = "11"          // engine version
       instance_class      = "db.t2.micro" // rds instance type
       db_name             = "tutorial"    // database name
       skip_final_snapshot = true
@@ -81,7 +81,8 @@ variable "private_subnet_cidr_blocks" {
 variable "my_ip" {
   description = "Your IP address"
   type        = string
-  sensitive   = true
+  #  sensitive   = true
+  default = "93.184.216.34"
 }
 
 // This variable contains the database master user
@@ -89,7 +90,8 @@ variable "my_ip" {
 variable "db_username" {
   description = "Database master user"
   type        = string
-  sensitive   = true
+  #  sensitive   = true
+  default = "mruldig"
 }
 
 // This variable contains the database master password
@@ -97,5 +99,6 @@ variable "db_username" {
 variable "db_password" {
   description = "Database master user password"
   type        = string
-  sensitive   = true
+  #  sensitive   = true
+  default = "mruldig123"
 }
