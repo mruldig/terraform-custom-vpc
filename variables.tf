@@ -32,9 +32,11 @@ variable "settings" {
   default = {
     "database" = {
       allocated_storage   = 5             // storage in gigabytes
+//      engine              = "aurora-postgresql"    // engine type
+//      engine_version      = "14.6"          // engine version
       engine              = "postgres"    // engine type
       engine_version      = "11"          // engine version
-      instance_class      = "db.t2.micro" // rds instance type
+      instance_class      = "db.t3.medium" // rds instance type
       db_name             = "tutorial"    // database name
       skip_final_snapshot = true
     },
@@ -46,9 +48,7 @@ variable "settings" {
 }
 
 // This variable contains the CIDR blocks for
-// the public subnet. I have only included 4
-// for this tutorial, but if you need more you 
-// would add them here
+// the public subnet. 
 variable "public_subnet_cidr_blocks" {
   description = "Available CIDR blocks for public subnets"
   type        = list(string)
@@ -91,7 +91,7 @@ variable "db_username" {
   description = "Database master user"
   type        = string
   #  sensitive   = true
-  default = "mruldig"
+  default = "postgres"
 }
 
 // This variable contains the database master password
@@ -100,5 +100,5 @@ variable "db_password" {
   description = "Database master user password"
   type        = string
   #  sensitive   = true
-  default = "mruldig123"
+  default = "postgres123"
 }

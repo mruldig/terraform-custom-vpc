@@ -296,7 +296,7 @@ resource "aws_db_instance" "tutorial_database" {
   // The amount of storage in gigabytes that we want for the database. This is 
   // being set by the settings.database.allocated_storage variable, which is 
   // set to 10
-  allocated_storage = var.settings.database.allocated_storage
+ allocated_storage = var.settings.database.allocated_storage
 
   // The engine we want for our database. This is being set by the 
   // settings.database.engine variable, which is set to "mysql"
@@ -337,6 +337,21 @@ resource "aws_db_instance" "tutorial_database" {
 }
 
 /*
+resource "aws_key_pair" "tf-key-pair" {
+  key_name   = "tf-key-pair"
+  public_key = tls_private_key.rsa.public_key_openssh
+} 
+  
+resource "tls_private_key" "rsa" {
+  algorithm = "RSA"
+  rsa_bits  = 4096            
+}  
+  
+resource "local_file" "tf-key" {
+  content  = tls_private_key.rsa.private_key_pem
+  filename = "tf-key-pair"
+}
+
 // Create a key pair named "tutorial_kp"
 resource "aws_key_pair" "tutorial_kp" {
   // Give the key pair a name
@@ -347,7 +362,7 @@ resource "aws_key_pair" "tutorial_kp" {
   // from a specific path. Since the public key
   // was created in the same directory as main.tf
   // we can just put the name
-  public_key = file("tutorial_kp.pub")
+#  public_key = file("tutorial_kp.pub")
 }
 */
 
@@ -379,6 +394,14 @@ resource "aws_instance" "tutorial_web" {
   // The security groups of the EC2 instance. This takes a list, however we only
   // have 1 security group for the EC2 instances.
   vpc_security_group_ids = [aws_security_group.tutorial_web_sg.id]
+//   key_name                    = aws_key_pair.tf-key-pair.key_name
+  user_data                   = <<-EOF
+    #!/bin/bash
+    sudo apt-get update
+    sudo snap install docker
+    sudo docker -version
+    docker run hello-world
+  EOF
 
   // We are tagging the EC2 instance with the name "tutorial_db_" followed by
   // the count index
@@ -413,7 +436,11 @@ resource "aws_eip" "tutorial_web_eip" {
   }
 }
 
-module "s3-bucket" {
-  source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "3.15.1"
+resource "aws_s3_bucket" "tutorial" {
+//  bucket = "my-tf-test-bucket"
+
+  tags = {
+    Name        = "My bucket"
+    Environment = "Dev"
+  }
 }
